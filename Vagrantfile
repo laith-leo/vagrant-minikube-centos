@@ -51,6 +51,7 @@ sudo usermod -Gdocker vagrant
 sudo systemctl daemon-reload && sudo systemctl restart docker
 KUBE_VERSION=v1.16.0
 sudo bash -c "curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/${KUBE_VERSION}/bin/linux/amd64/kubectl && chmod +x kubectl && mv -f kubectl /usr/bin/"
+sudo echo 1 > /proc/sys/net/bridge/bridge-nf-call-iptables
 SCRIPT
 
     config.vm.provision "minikube", type: "shell",  inline: <<-SCRIPT
@@ -63,7 +64,7 @@ SCRIPT
 
     config.vm.provision "shell", inline: <<-SHELL
 #!/bin/bash
-echo  "Configuring vagrant user dirctory"
+echo  "Configuring vagrant user directory"
 printf "source <(kubectl completion bash)\n" >> /home/vagrant/.bashrc
 # Permissions
 sudo mkdir /home/vagrant/.kconfig
